@@ -3,9 +3,9 @@ import dotenv from 'dotenv'
 dotenv.config()
 
 import app from './app'
-const { mongoConnect } = require('./services/mongo')
-const { loadPlanetsData } = require('./models/planets.model')
-const { loadLaunchData } = require('./models/launches.model')
+import { mongoConnect } from './services/mongo'
+import { loadPlanetsData } from './models/planets.model'
+import { loadLaunchData } from './models/launches.model'
 
 const PORT = process.env.PORT || 8000
 
