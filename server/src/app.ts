@@ -8,6 +8,7 @@ import rateLimit from 'express-rate-limit'
 
 import api from './routes/api'
 import { errorHandler, notFoundHandler } from './middlewares'
+import { helmetConfig } from './config'
 
 const app = express()
 
@@ -26,8 +27,8 @@ app.use(
   })
 )
 
-// Middleware to set HTTP headers securely
-app.use(helmet())
+// Middleware to set HTTP headers securely, including additional security headers
+app.use(helmet(helmetConfig))
 
 // Middleware to log HTTP requests
 app.use(morgan('combined'))
