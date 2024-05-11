@@ -6,6 +6,7 @@ import helmet from 'helmet'
 import rateLimit from 'express-rate-limit'
 
 import api from './routes/api'
+import { errorHandler } from './middlewares'
 
 const app = express()
 
@@ -32,5 +33,7 @@ app.use('/v1', api)
 app.get('/*', (req, res) => {
   res.sendFile(path.join(__dirname, '..', 'public', 'index.html'))
 })
+
+app.use(errorHandler)
 
 export default app
