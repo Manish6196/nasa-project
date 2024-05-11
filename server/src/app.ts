@@ -2,6 +2,7 @@ import path from 'node:path'
 import express from 'express'
 import cors from 'cors'
 import morgan from 'morgan'
+import compression from 'compression'
 import helmet from 'helmet'
 import rateLimit from 'express-rate-limit'
 
@@ -30,6 +31,9 @@ app.use(helmet())
 
 // Middleware to log HTTP requests
 app.use(morgan('combined'))
+
+// Use Compression middleware to compress HTTP responses
+app.use(compression())
 
 // Middleware to parse incoming JSON requests
 app.use(express.json())
