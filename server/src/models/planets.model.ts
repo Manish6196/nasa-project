@@ -4,6 +4,7 @@ import { parse } from 'csv-parse'
 
 import planets from './planets.mongo'
 import { PlanetData } from '../types'
+import { logger } from '../middlewares'
 
 function isHabitablePlanet(planet: PlanetData) {
   return (
@@ -31,12 +32,12 @@ export function loadPlanetsData() {
         }
       })
       .on('error', err => {
-        console.log(err)
+        logger.error(err)
         reject(err)
       })
       .on('end', async () => {
         const foundPlanetsCount = await getPlanetsCount()
-        console.log(`${foundPlanetsCount} habitable planets found!`)
+        logger.info(`${foundPlanetsCount} habitable planets found!`)
         resolve()
       })
   })
@@ -70,6 +71,6 @@ async function savePlanet(planet: PlanetData) {
       }
     )
   } catch (err) {
-    console.error(`Could not save planet ${err}`)
+    logger.error(`Could not save planet ${err}`)
   }
 }

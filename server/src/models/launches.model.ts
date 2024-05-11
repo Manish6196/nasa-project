@@ -3,13 +3,14 @@ import axios from 'axios'
 import launchesDatabase from './launches.mongo'
 import planets from './planets.mongo'
 import { Launch } from '../types'
+import { logger } from '../middlewares'
 
 const DEFAULT_FLIGHT_NUMBER = 100
 
 const SPACEX_API_URL = 'https://api.spacexdata.com/v4/launches/query'
 
 async function populateLaunches() {
-  console.log('Downloading launch data...')
+  logger.info('Downloading launch data...')
   const response = await axios.post(SPACEX_API_URL, {
     query: {},
     options: {
@@ -32,7 +33,7 @@ async function populateLaunches() {
   })
 
   if (response.status !== 200) {
-    console.log('Problem downloading launch data')
+    logger.info('Problem downloading launch data')
     throw new Error('Launch data download failed')
   }
 
@@ -53,7 +54,7 @@ async function populateLaunches() {
       customers,
     } as Launch
 
-    console.log(`${launch.flightNumber} ${launch.mission}`)
+    logger.info(`${launch.flightNumber} ${launch.mission}`)
 
     await saveLaunch(launch)
   }
@@ -66,7 +67,7 @@ export async function loadLaunchData() {
     mission: 'FalconSat',
   })
   if (firstLaunch) {
-    console.log('Launch data already loaded!')
+    logger.info('Launch data already loaded!')
   } else {
     await populateLaunches()
   }
