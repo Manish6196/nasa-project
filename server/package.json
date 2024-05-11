@@ -6,11 +6,10 @@
   "scripts": {
     "test": "jest --detectOpenHandles",
     "test-watch": "jest --watch",
-    "watch": "nodemon src/server.js",
-    "start": "nodemon src/server.ts",
+    "watch": "nodemon src/server.ts",
+    "start": "node dist/server.js",
     "build": "tsc",
-    "prod-start": "node dist/server.js",
-    "cluster": "pm2 start src/server.js -i max"
+    "cluster": "pm2 start dist/server.js -i max"
   },
   "keywords": [],
   "author": "",
