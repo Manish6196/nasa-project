@@ -1,7 +1,8 @@
-const axios = require('axios')
+import axios from 'axios'
 
-const launchesDatabase = require('./launches.mongo')
-const planets = require('./planets.mongo')
+import launchesDatabase from './launches.mongo'
+import planets from './planets.mongo'
+import { Launch } from '../types'
 
 const DEFAULT_FLIGHT_NUMBER = 100
 
@@ -38,7 +39,7 @@ async function populateLaunches() {
   const launchDocs = response.data.docs
   for (const launchDoc of launchDocs) {
     const payloads = launchDoc['payloads']
-    const customers = payloads.flatMap(payload => {
+    const customers = payloads.flatMap((payload: Launch) => {
       return payload['customers']
     })
 
@@ -50,7 +51,7 @@ async function populateLaunches() {
       upcoming: launchDoc['upcoming'],
       success: launchDoc['success'],
       customers,
-    }
+    } as Launch
 
     console.log(`${launch.flightNumber} ${launch.mission}`)
 
@@ -58,7 +59,7 @@ async function populateLaunches() {
   }
 }
 
-async function loadLaunchData() {
+export async function loadLaunchData() {
   const firstLaunch = await findLaunch({
     flightNumber: 1,
     rocket: 'Falcon 1',
@@ -71,11 +72,11 @@ async function loadLaunchData() {
   }
 }
 
-async function findLaunch(filter) {
+async function findLaunch(filter: any) {
   return await launchesDatabase.findOne(filter)
 }
 
-async function existsLaunchWithId(launchId) {
+export async function existsLaunchWithId(launchId: number) {
   return await findLaunch({
     flightNumber: launchId,
   })
@@ -91,7 +92,7 @@ async function getLatestFlightNumber() {
   return latestLaunch.flightNumber
 }
 
-async function getAllLaunches(skip, limit) {
+export async function getAllLaunches(skip: number, limit: number) {
   return await launchesDatabase
     .find({}, { _id: 0, __v: 0 })
     .sort({ flightNumber: 1 })
@@ -99,7 +100,7 @@ async function getAllLaunches(skip, limit) {
     .limit(limit)
 }
 
-async function saveLaunch(launch) {
+async function saveLaunch(launch: Launch) {
   await launchesDatabase.findOneAndUpdate(
     {
       flightNumber: launch.flightNumber,
@@ -111,7 +112,7 @@ async function saveLaunch(launch) {
   )
 }
 
-async function scheduleNewLaunch(launch) {
+export async function scheduleNewLaunch(launch: Launch) {
   const planet = await planets.findOne({
     keplerName: launch.target,
   })
@@ -132,7 +133,7 @@ async function scheduleNewLaunch(launch) {
   await saveLaunch(newLaunch)
 }
 
-async function abortLaunchById(launchId) {
+export async function abortLaunchById(launchId: number) {
   const aborted = await launchesDatabase.updateOne(
     {
       flightNumber: launchId,
@@ -144,12 +145,4 @@ async function abortLaunchById(launchId) {
   )
 
   return aborted.modifiedCount === 1
-}
-
-module.exports = {
-  loadLaunchData,
-  existsLaunchWithId,
-  getAllLaunches,
-  scheduleNewLaunch,
-  abortLaunchById,
 }

@@ -1,8 +1,8 @@
-const http = require('http')
+import http from 'http'
+import dotenv from 'dotenv'
+dotenv.config()
 
-require('dotenv').config()
-
-const app = require('./app')
+import app from './app'
 const { mongoConnect } = require('./services/mongo')
 const { loadPlanetsData } = require('./models/planets.model')
 const { loadLaunchData } = require('./models/launches.model')

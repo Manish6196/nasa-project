@@ -1,19 +1,24 @@
-const {
+import { Request, Response } from 'express'
+import {
   getAllLaunches,
   scheduleNewLaunch,
   existsLaunchWithId,
   abortLaunchById,
-} = require('../../models/launches.model')
+} from '../../models/launches.model'
 
-const { getPagination } = require('../../services/query')
+import { getPagination } from '../../services/query'
+import { PaginationQuery, TypedRequest } from '../../types'
 
-async function httpGetAllLaunches(req, res) {
+export async function httpGetAllLaunches(
+  req: TypedRequest<PaginationQuery, {}>,
+  res: Response
+) {
   const { skip, limit } = getPagination(req.query)
   const launches = await getAllLaunches(skip, limit)
   return res.status(200).json(launches)
 }
 
-async function httpAddNewLaunch(req, res) {
+export async function httpAddNewLaunch(req: Request, res: Response) {
   const launch = req.body
 
   if (
@@ -38,7 +43,7 @@ async function httpAddNewLaunch(req, res) {
   return res.status(201).json(launch)
 }
 
-async function httpAbortLaunch(req, res) {
+export async function httpAbortLaunch(req: Request, res: Response) {
   const launchId = Number(req.params.id)
 
   const existsLaunch = await existsLaunchWithId(launchId)
@@ -58,10 +63,4 @@ async function httpAbortLaunch(req, res) {
   return res.status(200).json({
     ok: true,
   })
-}
-
-module.exports = {
-  httpGetAllLaunches,
-  httpAddNewLaunch,
-  httpAbortLaunch,
 }

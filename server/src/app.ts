@@ -1,9 +1,9 @@
-const path = require('path')
-const express = require('express')
-const cors = require('cors')
-const morgan = require('morgan')
+import path from 'path'
+import express from 'express'
+import cors from 'cors'
+import morgan from 'morgan'
 
-const api = require('./routes/api')
+import api from './routes/api'
 
 const app = express()
 
@@ -23,4 +23,4 @@ app.get('/*', (req, res) => {
   res.sendFile(path.join(__dirname, '..', 'public', 'index.html'))
 })
 
-module.exports = app
+export default app
