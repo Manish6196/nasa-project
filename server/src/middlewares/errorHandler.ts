@@ -1,16 +1,6 @@
-import { ErrorRequestHandler, Request, Response, NextFunction } from 'express'
+import { Request, Response } from 'express'
 
-export const errorHandler: ErrorRequestHandler = (
-  err: Error,
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  console.error(`Error occurred: ${err.stack}`)
-
-  if (res.headersSent) {
-    return next(err)
-  }
-
+export const errorHandler = (err: Error, req: Request, res: Response) => {
+  console.error(err.stack)
   res.status(500).send('Internal Server Error')
 }
