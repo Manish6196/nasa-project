@@ -2,6 +2,7 @@ import path from 'path'
 import express from 'express'
 import cors from 'cors'
 import morgan from 'morgan'
+import helmet from 'helmet'
 
 import api from './routes/api'
 
@@ -12,6 +13,7 @@ app.use(
     origin: 'http://localhost:3000',
   })
 )
+app.use(helmet())
 app.use(morgan('combined'))
 
 app.use(express.json())
