@@ -5,6 +5,10 @@
     "outDir": "./dist",
     "rootDir": "./src",
     "strict": true,
+    "removeComments": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
     "esModuleInterop": true
-  }
+  },
+  "exclude": ["node_modules", "dist", "logs", "public"]
 }
