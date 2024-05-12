@@ -2,11 +2,11 @@ import fs from 'fs'
 import path from 'path'
 import { parse } from 'csv-parse'
 
-import planets from './planets.mongo'
-import { PlanetData } from '../types'
+import { Planet } from './planets.mongo'
+import { IPlanetData } from '../types'
 import { logger } from '../middlewares'
 
-function isHabitablePlanet(planet: PlanetData) {
+function isHabitablePlanet(planet: IPlanetData) {
   return (
     planet['koi_disposition'] === 'CONFIRMED' &&
     planet['koi_insol'] > 0.36 &&
@@ -44,7 +44,7 @@ export function loadPlanetsData() {
 }
 
 export async function getAllPlanets() {
-  return await planets.find(
+  return await Planet.find(
     {},
     {
       _id: 0,
@@ -54,12 +54,12 @@ export async function getAllPlanets() {
 }
 
 async function getPlanetsCount() {
-  return await planets.countDocuments({})
+  return await Planet.countDocuments({})
 }
 
-async function savePlanet(planet: PlanetData) {
+async function savePlanet(planet: IPlanetData) {
   try {
-    await planets.updateOne(
+    await Planet.updateOne(
       {
         keplerName: planet.kepler_name,
       },

@@ -7,10 +7,10 @@ import {
 } from '../../models/launches.model'
 
 import { getPagination } from '../../services/query'
-import { LaunchPayload, PaginationQuery, TypedRequest } from '../../types'
+import { ILaunchPayload, IPaginationQuery, TypedRequest } from '../../types'
 
 export async function httpGetAllLaunches(
-  req: TypedRequest<PaginationQuery, {}>,
+  req: TypedRequest<IPaginationQuery, {}>,
   res: Response
 ) {
   const { skip, limit } = getPagination(req.query)
@@ -19,7 +19,7 @@ export async function httpGetAllLaunches(
 }
 
 export async function httpAddNewLaunch(
-  req: TypedRequest<{}, LaunchPayload>,
+  req: TypedRequest<{}, ILaunchPayload>,
   res: Response
 ) {
   const launch = req.body

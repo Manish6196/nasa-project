@@ -3,23 +3,23 @@ export interface TypedRequest<T, U> extends Express.Request {
   query: T
 }
 
-export interface PaginationQuery {
+export interface IPaginationQuery {
   page: number
   limit: number
 }
 
-export interface LaunchPayload {
+export interface ILaunchPayload {
   launchDate: string
   mission: string
   rocket: string
   target: string
 }
 
-export interface LaunchToSave extends Omit<LaunchPayload, 'launchDate'> {
+export interface ILaunchToSave extends Omit<ILaunchPayload, 'launchDate'> {
   launchDate: Date
 }
 
-export interface Launch {
+export interface ILaunch {
   flightNumber: number
   launchDate: Date
   mission: string
@@ -30,7 +30,7 @@ export interface Launch {
   customers: string[]
 }
 
-export interface PlanetData {
+export interface IPlanetData {
   kepler_name: string
   koi_disposition: string
   koi_insol: number
