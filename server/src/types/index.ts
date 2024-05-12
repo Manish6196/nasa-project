@@ -8,6 +8,17 @@ export interface PaginationQuery {
   limit: number
 }
 
+export interface LaunchPayload {
+  launchDate: string
+  mission: string
+  rocket: string
+  target: string
+}
+
+export interface LaunchToSave extends Omit<LaunchPayload, 'launchDate'> {
+  launchDate: Date
+}
+
 export interface Launch {
   flightNumber: number
   launchDate: Date

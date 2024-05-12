@@ -7,7 +7,7 @@ import {
 } from '../../models/launches.model'
 
 import { getPagination } from '../../services/query'
-import { PaginationQuery, TypedRequest } from '../../types'
+import { LaunchPayload, PaginationQuery, TypedRequest } from '../../types'
 
 export async function httpGetAllLaunches(
   req: TypedRequest<PaginationQuery, {}>,
@@ -18,29 +18,18 @@ export async function httpGetAllLaunches(
   return res.status(200).json(launches)
 }
 
-export async function httpAddNewLaunch(req: Request, res: Response) {
+export async function httpAddNewLaunch(
+  req: TypedRequest<{}, LaunchPayload>,
+  res: Response
+) {
   const launch = req.body
 
-  if (
-    !launch.mission ||
-    !launch.rocket ||
-    !launch.launchDate ||
-    !launch.target
-  ) {
-    return res.status(400).json({
-      error: 'Missing required launch property',
-    })
-  }
+  const lauchToSave = Object.assign({}, launch, {
+    launchDate: new Date(launch.launchDate),
+  })
 
-  launch.launchDate = new Date(launch.launchDate)
-  if (isNaN(launch.launchDate)) {
-    return res.status(400).json({
-      error: 'Invalid launch date',
-    })
-  }
-
-  await scheduleNewLaunch(launch)
-  return res.status(201).json(launch)
+  await scheduleNewLaunch(lauchToSave)
+  return res.status(201).json(lauchToSave)
 }
 
 export async function httpAbortLaunch(req: Request, res: Response) {

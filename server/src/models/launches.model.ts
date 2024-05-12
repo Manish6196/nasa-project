@@ -2,7 +2,7 @@ import axios from 'axios'
 
 import launchesDatabase from './launches.mongo'
 import planets from './planets.mongo'
-import { Launch } from '../types'
+import { Launch, LaunchToSave } from '../types'
 import { logger } from '../middlewares'
 
 const DEFAULT_FLIGHT_NUMBER = 100
@@ -113,7 +113,7 @@ async function saveLaunch(launch: Launch) {
   )
 }
 
-export async function scheduleNewLaunch(launch: Launch) {
+export async function scheduleNewLaunch(launch: LaunchToSave) {
   const planet = await planets.findOne({
     keplerName: launch.target,
   })
