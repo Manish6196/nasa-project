@@ -46,7 +46,7 @@ app.use(express.static(path.join(__dirname, '..', 'public')))
 app.use('/v1', api)
 
 // Middleware to serve React application for all routes except API routes
-app.get('/*', (req, res) => {
+app.get('/*', (_, res) => {
   res.sendFile(path.join(__dirname, '..', 'public', 'index.html'))
 })
 
